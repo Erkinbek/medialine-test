@@ -46,6 +46,12 @@ class CategoriesController extends Controller
 	public function actionUpdate()
 	{
 		$model = Categories::findOne($this->data->id);
+		if (!$model) {
+			return [
+				'result' => false,
+				'message' => 'Article not found'
+			];
+		}
 		$model->title = $this->data->title;
 		$model->parent_id = $this->data->parent_id;
 		if ($model->save()) {
@@ -63,6 +69,12 @@ class CategoriesController extends Controller
 	public function actionDelete()
 	{
 		$model = Categories::findOne($this->data->id);
+		if (!$model) {
+			return [
+				'result' => false,
+				'message' => 'Article not found'
+			];
+		}
 		return $model->delete();
 	}
 
@@ -85,10 +97,6 @@ class CategoriesController extends Controller
 
 	public function getData()
 	{
-		if (Yii::$app->request->isPost) {
-			$this->data = json_decode(file_get_contents("php://input"));
-		} else {
-			exit();
-		}
+		$this->data = json_decode(file_get_contents("php://input"));
 	}
 }
