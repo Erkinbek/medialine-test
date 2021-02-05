@@ -55,14 +55,23 @@ yii migrate
 
 # Routes
 
+## Categories
+
 - domain.com/api/categories         | List of all cateogories
 - domain.com/api/categories/create  | for creating new category
-- domain.com/api/categories/update/id  | for updating category
-- domain.com/api/categories/delete/id  | for deleting category
+- domain.com/api/categories/update  | for updating category
+- domain.com/api/categories/delete  | for deleting category
+
+## Articles
+
+- domain.com/api/articles           | List of all articles
+- domain.com/api/articles/create    | for creating new article
+- domain.com/api/articles/update    | for updating article
+- domain.com/api/articles/delete    | for deleting article
 
 ### domain.com/api/categories
 
-Request type: POST   
+Request method: POST | GET   
 Response type: JSON (List of categories returns recursive by parent)
 ```json
 [
@@ -110,7 +119,7 @@ Response type: JSON (List of categories returns recursive by parent)
 
 ### domain.com/api/categories/create
 
-Request type: POST   
+Request method: POST   
 ```json
 {
     "title": "Test",
@@ -136,7 +145,7 @@ if any error:
 
 ### domain.com/api/categories/update
 
-Request type: POST
+Request method: POST
 ```json
 {
     "id": 10,
@@ -157,13 +166,14 @@ if success:
 if any error:
 ```json
 {
-    "result": false
+  "result": false,
+  "message": "Category not found"
 }
 ```
 
 ### domain.com/api/categories/delete
 
-Request type: POST
+Request method: POST
 ```json
 {
     "id": 10
@@ -181,6 +191,141 @@ if success:
 if any error:
 ```json
 {
+  "result": false,
+  "message": "Category not found"
+}
+```
+
+### domain.com/api/articles
+
+Request method: POST | GET   
+Response type: JSON
+```json
+[
+  {
+    "id": "1",
+    "title": "Test",
+    "body": "Tested test Tested test Tested test Tested test Tested test Tested test Tested test Tested test Tested test ",
+    "created_at": "2021-02-04 18:43:13",
+    "updated_at": null,
+    "article_id": null,
+    "categories": null
+  },
+  {
+    "id": "18",
+    "title": "Test #2",
+    "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "created_at": "2021-02-05 10:16:47",
+    "updated_at": null,
+    "article_id": "18",
+    "categories": "Общество,Городская жизнь, 0-3 года"
+  }
+]
+```
+### domain.com/api/articles/category
+
+Request method: POST   
+
+```json
+{
+    "id": 1
+}
+```
+
+Response type: JSON (List of all articles belongs to category)   
+You must set category id to **id** field
+
+```json
+[
+    {
+        "id": "18",
+        "title": "Test #2",
+        "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "created_at": "2021-02-05 10:16:47",
+        "updated_at": null,
+        "article_id": "18",
+        "categories": "Общество,3-7 года,Выборы,Test"
+    }
+]
+```
+
+
+### domain.com/api/articles/create
+
+Request method: POST
+```json
+{
+  "title": "Test #3",
+  "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  "category": "5,8,9,7"
+}
+```
+Response type: JSON (Result, if all is ok will add id of new article)
+
+if success:
+```json
+{
+    "result": true,
+    "id": 10
+}
+```
+
+if any error:
+```json
+{
     "result": false
+}
+```
+
+### domain.com/api/articles/update
+
+Request method: POST
+```json
+{
+  "id": 18,
+  "title": "Test #2",
+  "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  "category": "1,2,7"
+}
+```
+Response type: JSON (Result, if all is ok will add id of new category)
+
+if success:
+```json
+{
+    "result": true
+}
+```
+
+if any error:
+```json
+{
+  "result": false,
+  "message": "Article not found"
+}
+```
+
+### domain.com/api/articles/delete
+
+Request method: POST
+```json
+{
+    "id": 10
+}
+```
+Response type: JSON
+
+if success:
+```json
+{
+    "result": true
+}
+```
+
+if any error:
+```json
+{
+  "result": false,
+  "message": "Article not found"
 }
 ```
